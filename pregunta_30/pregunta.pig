@@ -33,4 +33,23 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
-
+data = LOAD 'data.csv' USING PigStorage(',')
+    AS (
+            index:int,
+            nombre:chararray,
+            apellido:chararray,
+            fecha:chararray,
+            color:chararray,
+            numb:int
+    );
+date_col = FOREACH data GENERATE fecha, ToDate(fecha,'yyyy-MM-dd') as date;
+date_col = FOREACH date_col GENERATE fecha, SUBSTRING(fecha,8,10) as dia, GetDay(date) as dia2, LOWER(ToString(date,'EEEEE')) as dia3; 
+date_col = FOREACH date_col GENERATE fecha, dia, dia2, REPLACE(dia3,'monday','lunes') as dia3;  
+date_col = FOREACH date_col GENERATE fecha, dia, dia2, REPLACE(dia3,'tuesday','martes') as dia3;  
+date_col = FOREACH date_col GENERATE fecha, dia, dia2, REPLACE(dia3,'wednesday','miercoles') as dia3;  
+date_col = FOREACH date_col GENERATE fecha, dia, dia2, REPLACE(dia3,'thursday','jueves') as dia3;  
+date_col = FOREACH date_col GENERATE fecha, dia, dia2, REPLACE(dia3,'friday','viernes') as dia3;  
+date_col = FOREACH date_col GENERATE fecha, dia, dia2, REPLACE(dia3,'saturday','sabado') as dia3;  
+date_col = FOREACH date_col GENERATE fecha, dia, dia2, REPLACE(dia3,'sunday','domingo') as dia3;  
+date_col = FOREACH date_col GENERATE fecha, dia, dia2, SUBSTRING(dia3,0,3), dia3;  
+STORE date_col INTO 'output' USING PigStorage(',');

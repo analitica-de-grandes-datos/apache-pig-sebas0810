@@ -13,4 +13,16 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+data = LOAD 'data.tsv' USING PigStorage('\t')
+    AS (
+            letra:chararray,
+            conjunto:chararray,
+            lista:chararray
+    );
+data_total = FOREACH data GENERATE lista;
+data_list_desag = FOREACH data_total GENERATE FLATTEN(TOKENIZE(lista)) AS clave;
+solo_letras = FOREACH data_list_desag GENERATE REPLACE (clave,'([^a-zA-Z\\s]+)','') as clave;
+grupos = GROUP solo_letras BY clave;
+contar = FOREACH grupos GENERATE group, COUNT(solo_letras);
+STORE contar INTO 'output' USING PigStorage(',');
 
