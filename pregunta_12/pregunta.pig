@@ -26,4 +26,15 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
-
+data = LOAD 'data.csv' USING PigStorage(',')
+    AS (
+            index:int,
+            nombre:chararray,
+            apellido:chararray,
+            fecha:chararray,
+            color:chararray,
+            numb:int
+    );
+data_ape = FOREACH data GENERATE apellido;
+data_fil = FILTER data_ape BY (apellido MATCHES '.*^[d-kD-K].*');
+STORE data_fil INTO 'output' USING PigStorage(',');
