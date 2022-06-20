@@ -28,5 +28,5 @@ data = LOAD 'data.csv' USING PigStorage(',')
             color:chararray,
             numb:int
     );
-data_col = FOREACH data GENERATE nombre, INDEXOF(nombre,'ia', 1) as nom_ind;
+data_col = FOREACH data GENERATE INDEXOF(nombre,'ia', 1) as nom_ind;
 STORE data_col INTO 'output' USING PigStorage(',');

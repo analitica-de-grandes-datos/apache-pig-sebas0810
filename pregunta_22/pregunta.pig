@@ -31,5 +31,5 @@ data = LOAD 'data.csv' USING PigStorage(',')
             numb:int
     );
 data_col = FOREACH data GENERATE nombre,color;
-data_fil = FILTER data_col BY (color MATCHES '.*[nN].*');
+data_fil = FILTER data_col BY (color MATCHES '.*[nN]$.*');
 STORE data_fil INTO 'output' USING PigStorage(',');

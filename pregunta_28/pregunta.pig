@@ -31,5 +31,5 @@ data = LOAD 'data.csv' USING PigStorage(',')
             color:chararray,
             numb:int
     );
-data_col = FOREACH data GENERATE fecha, SUBSTRING(fecha,0,4) AS ano, SUBSTRING(fecha,2,4) AS ano2;
+data_col = FOREACH data GENERATE SUBSTRING(fecha,0,4) AS ano, SUBSTRING(fecha,2,4) AS ano2;
 STORE data_col INTO 'output' USING PigStorage(',');
