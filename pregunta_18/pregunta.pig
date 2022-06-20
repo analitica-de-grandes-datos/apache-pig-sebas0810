@@ -31,4 +31,4 @@ data = LOAD 'data.csv' USING PigStorage(',')
     );
 data_col = FOREACH data GENERATE nombre,color;
 data_fil = FILTER data_col BY NOT color IN ('blue','black');
-STORE data_fil INTO 'output' USING PigStorage(' ');
+STORE data_fil INTO 'output' USING PigStorage(',');
